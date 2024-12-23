@@ -30,6 +30,7 @@ variable "vpc_id" {
 variable "subnet_ids" {
   description = "Subnet IDs"
   type        = list(string)
+  default = ["subnet-0cca8fd4378a176ff"]
 }
 
 variable "ecs_task_definition" {
