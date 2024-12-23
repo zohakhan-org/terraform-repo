@@ -52,10 +52,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.ecs_task_definition.arn
   desired_count   = 1
 
-  deployment_configuration {
-    minimum_healthy_percent = 100
-    maximum_percent         = 200
-  }
+  launch_type = "FARGATE"
 
   load_balancer {
     target_group_arn = aws_lb_target_group.example.arn
@@ -63,9 +60,13 @@ resource "aws_ecs_service" "ecs_service" {
     container_port   = 80
   }
 
-  tags = {
-    Name = "my-ecs-service"
+  deployment_controller {
+    type = "ECS"
   }
+
+  # Deployment settings
+  minimum_healthy_percent = 50
+  maximum_percent         = 200
 }
 
 # Create an IAM role for ECS instances
