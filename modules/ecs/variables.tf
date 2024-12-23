@@ -25,6 +25,7 @@ variable "cluster_name" {
 variable "vpc_id" {
   description = "VPC ID"
   type        = string
+  default = "vpc-0e88381e6c4aa04f8"
 }
 
 variable "subnet_ids" {
