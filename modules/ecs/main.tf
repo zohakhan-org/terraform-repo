@@ -6,7 +6,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 # Create an ECS task definition
 resource "aws_ecs_task_definition" "ecs_task_definition" {
   family                   = "my-task-family"
-  container_definitions    = file("container_definitions.json")
+  container_definitions    = file("container-definitions.json")
   requires_compatibilities = ["EC2"]
   cpu                      = "256"
   memory                   = "512"

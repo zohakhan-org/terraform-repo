@@ -7,6 +7,7 @@ variable "region" {
 variable "ami" {
   description = "The AMI ID for ECS instances"
   type        = string
+  default = "ami-0b0ea68c435eb488d"
 }
 
 variable "instance_type" {
