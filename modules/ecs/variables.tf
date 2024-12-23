@@ -35,6 +35,7 @@ variable "subnet_ids" {
 variable "ecs_task_definition" {
   description = "The ECS task definition"
   type        = string
+    default     = "container-definitions.json"
 }
 
 variable "ecs_service_name" {
