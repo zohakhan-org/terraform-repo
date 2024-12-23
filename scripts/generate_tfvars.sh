@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # Inputs
-SERVICES=$1
+SERVICES="${SELECTED_SERVICES}"
 CONFIG_FILE="../services-config.yaml"
 TFVARS_FILE="terraform.tfvars"
 
+
 if [[ -z "$SERVICES" ]]; then
-  echo "Error: No Services provided <comma-sepetated-services?"
+  echo "Error: No Services provided <comma-sepetated-services?>"
   exit 1
 fi
 
