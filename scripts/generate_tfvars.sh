@@ -2,7 +2,7 @@
 
 # Inputs
 SERVICES="${SELECTED_SERVICES}"
-CONFIG_FILE="../services-config.yaml"
+CONFIG_FILE="./services-config.yaml"
 TFVARS_FILE="terraform.tfvars"
 
 
