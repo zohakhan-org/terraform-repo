@@ -46,15 +46,26 @@ resource "aws_security_group" "ecs_sg" {
   }
 }
 
-# ECS Service to run the task
 resource "aws_ecs_service" "ecs_service" {
-  name            = var.ecs_service_name
+  name            = "my-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task_definition.arn
   desired_count   = 1
-  launch_type     = "EC2"
 
-  minimum_healthy_percent = 100
+  deployment_configuration {
+    minimum_healthy_percent = 100
+    maximum_percent         = 200
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.example.arn
+    container_name   = "my-container"
+    container_port   = 80
+  }
+
+  tags = {
+    Name = "my-ecs-service"
+  }
 }
 
 # Create an IAM role for ECS instances
