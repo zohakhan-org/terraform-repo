@@ -1,0 +1,109 @@
+name: AWS Infrastructure Deployment Framework
+
+on:
+  workflow_dispatch:
+    inputs:
+      selected_services:
+        description: "Comma-separated list of AWS services to deploy (e.g., vpc,s3,eks)"
+        required: true
+        default: "vpc,s3"
+      action:
+        description: "Select action: apply or destroy"
+        required: true
+        default: "apply"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.4
+
+      - name: Install dependencies
+        run: |
+          sudo add-apt-repository ppa:rmescandon/yq
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip
+          pip3 install pyyaml
+          pip install yq
+          pip install jq
+          jq --version
+          yq --version
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "us-east-1"
+
+
+
+
+      - name: Create services_to_deploy.yaml
+        id: parse_input
+        run: |
+          chmod +x ./scripts/generate_services_yaml.sh
+          ./scripts/generate_services_yaml.sh "${{ github.event.inputs.selected_services }}"
+          echo "SELECTED_SERVICES=${{ github.event.inputs.selected_services }}" >> $GITHUB_ENV
+          cat services_to_deploy.yaml
+          echo "$SELECTED_SERVICES"
+
+
+      - name: Validate Services
+        run: |
+          python scripts/validate_services.py services_to_deploy.yaml
+
+      - name: Generate terraform.tfvars
+        run: |
+          chmod +x ./scripts/generate_tfvars.sh
+          ./scripts/generate_tfvars.sh
+          chmod +x ./terraform.tfvars
+          cat terraform.tfvars
+
+
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: |
+          chmod +x ./scripts/terraform_deploy.sh
+          ./scripts/terraform_deploy.sh
+
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: |
+          chmod +x ./scripts/terraform_destroy.sh
+          ./scripts/terraform_destroy.sh
+
+
+      - name: Restore Terraform State
+
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/
+
+
+      - name: Clean up
+        run: |
+          rm services_to_deploy.yaml
+
+      - name: Save Terraform State
+        if: always() && ${{ github.event.inputs.action == 'apply' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/terraform.tfstate
+
+      - name: Restore Terraform State
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/
