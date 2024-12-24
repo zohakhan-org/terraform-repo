@@ -81,9 +81,6 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform  -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.s3
       cd - || exit
       ;;
-    *)
-      echo "Unknown service: $SERVICE"
-      ;;
     "iam_user_creation")
       echo "Deploying IAM User Creation service..."
       chmod +r terraform.tfvars
@@ -98,6 +95,10 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
       cd - || exit
       ;;
+    *)
+      echo "Unknown service: $SERVICE"
+      ;;
+
   esac
 done
 
