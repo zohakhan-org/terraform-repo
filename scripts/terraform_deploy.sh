@@ -24,7 +24,7 @@ fi
 
 # Read the services to deploy from the YAML file using yq
 SELECTED_SERVICES=$(yq -r '.services[]' "$SERVICES_FILE")
-
+ORIGINAL_DIR=$(pwd)
 
 # Iterate over the selected services and call the corresponding modules
 for SERVICE in $SELECTED_SERVICES; do
@@ -90,9 +90,10 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
       ls -lrt "$MODULE_PATH"
-      cat "$TFVARS_FILE" && terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
+      cat "$TFVARS_FILE" && terraform -chdir="$MODULE_PATH" plan -replace="aws_iam_user.iam_user" -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
       echo "Terraform apply"
-      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
+
+      terraform -chdir="$MODULE_PATH" apply -replace="aws_iam_user.iam_user" -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
       cd - || exit
       ;;
     *)
@@ -100,6 +101,7 @@ for SERVICE in $SELECTED_SERVICES; do
       ;;
 
   esac
+    cd "$ORIGINAL_DIR" || exit
 done
 
 
