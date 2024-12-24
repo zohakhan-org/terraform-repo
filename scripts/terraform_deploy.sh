@@ -90,9 +90,7 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
       ls -lrt "$MODULE_PATH"
-     terraform -chdir=modules/iam_user_creation state list
 
-      terraform -chdir="$MODULE_PATH" taint modules.iam_user_creation.aws_iam_user.iam_user
       terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
       echo "Terraform apply"
 
