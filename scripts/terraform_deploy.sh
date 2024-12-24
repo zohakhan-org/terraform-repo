@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Running Terraform Plan..."
+echo "Running Terraform Plan and deploy..."
 pwd
 ls -lrt
 echo "services configuration "
@@ -83,6 +83,20 @@ for SERVICE in $SELECTED_SERVICES; do
       ;;
     *)
       echo "Unknown service: $SERVICE"
+      ;;
+    "iam_user_creation")
+      echo "Deploying IAM User Creation service..."
+      chmod +r terraform.tfvars
+      cp terraform.tfvars "$MODULE_PATH/"
+      terraform -chdir="$MODULE_PATH" init
+      echo "Terraform Validate"
+      terraform -chdir="$MODULE_PATH" validate
+      echo "terraform plan"
+      ls -lrt "$MODULE_PATH"
+      cat "$TFVARS_FILE" && terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
+      echo "Terraform apply"
+      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
+      cd - || exit
       ;;
   esac
 done

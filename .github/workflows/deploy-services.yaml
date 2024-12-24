@@ -68,7 +68,7 @@ jobs:
           cat terraform.tfvars
 
 
-      - name: Terraform Plan
+      - name: Terraform Plan and deploy
         if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           chmod +x ./scripts/terraform_deploy.sh
