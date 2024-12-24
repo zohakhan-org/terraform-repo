@@ -2,10 +2,16 @@ aws_region: "us-east-1"
 
 services:
   ecs:
-    ecs_cluster_name: "my-ecs-cluster"
-    ami: "ami-0b0ea68c435eb488d"
-    ecs_instance_type: "t3.medium"
-    subnet_ids: "subnet-0cca8fd4378a176ff"
+    cluster_name: "my-ecs-cluster"
+    service_name: "my-service"
+    execution_role_arn: "arn:aws:iam::724772050207:role/ECSTaskExecutionRole"
+    task_role_arn      : "arn:aws:iam::724772050207:role/ECSTaskExecutionRole"
+    ecs_security_groups : ["sg-0a4944f656ab9eb44"]
+    subnet_ids         : ["subnet-0cca8fd4378a176ff"]
+    vpc_id             : "vpc-0e88381e6c4aa04f8"
+    container_name     : "my-container"
+    container_port: 80
+    desired_count : 1
 
   s3:
     bucket_name: "my-app-bucket"
@@ -34,3 +40,7 @@ services:
     instance_type: "t2.micro"
     ami_id: "ami-0b0ea68c435eb488d"
     key_name: "my-key-pair"
+
+  iam_user_creation:
+    policy_name: "AdministratorAccess"
+    user_prefix: "my-user"
