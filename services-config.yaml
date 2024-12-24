@@ -43,4 +43,4 @@ services:
 
   iam_user_creation:
     policy_name: "AdministratorAccess"
-    user_prefix: "my-user"
+    user_prefix: "my-admin-user"
