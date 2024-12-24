@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "automation_assume_role_policy" {
 }
 
 resource "aws_iam_user" "iam_user" {
-  name="${var.iam_user_creation_user_prefix}.${var.iam_user_creation_policy_name}-${timestamp()}"
+  name="${var.iam_user_creation_user_prefix}.${var.iam_user_creation_policy_name}-${random_id.user_suffix.hex}"
 
   lifecycle {
     create_before_destroy = true
@@ -28,4 +28,8 @@ resource "aws_iam_user_policy" "iam_user_policy" {
   user=aws_iam_user.iam_user.name
   policy = data.aws_iam_policy_document.automation_assume_role_policy.json
 
+}
+
+resource "random_id" "user_suffix" {
+  byte_length = 8
 }

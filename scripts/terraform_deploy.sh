@@ -53,7 +53,7 @@ for SERVICE in $SELECTED_SERVICES; do
       echo "Terraform apply"
 
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"  -target=modules.ecs
-      cd - || exit
+      cd "$ORIGINAL_DIR" || exit
       ;;
     "iam")
       echo "Deploying IAM service..."
@@ -67,7 +67,7 @@ for SERVICE in $SELECTED_SERVICES; do
       cat "$TFVARS_FILE" && terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam
       echo "Terraform apply"
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.iam
-      cd - || exit
+      cd "$ORIGINAL_DIR" || exit
       ;;
     "s3")
       echo "Deploying S3 service..."
@@ -79,7 +79,7 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform  -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE" -target=modules.s3
       echo "Terraform apply"
       terraform  -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.s3
-      cd - || exit
+      cd "$ORIGINAL_DIR" || exit
       ;;
     "iam_user_creation")
       echo "Deploying IAM User Creation service..."
@@ -92,18 +92,18 @@ for SERVICE in $SELECTED_SERVICES; do
       ls -lrt "$MODULE_PATH"
       terraform -chdir="$MODULE_PATH" refresh -var-file="$TFVARS_FILE"
 
-      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
+      terraform -chdir="$MODULE_PATH" plan  -replace="aws_iam_user.iam_user" -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
       echo "Terraform apply"
 
-      terraform -chdir="$MODULE_PATH" apply  -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
-      cd - || exit
+      terraform -chdir="$MODULE_PATH" apply -replace="aws_iam_user.iam_user" -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
+      cd "$ORIGINAL_DIR" || exit
       ;;
     *)
       echo "Unknown service: $SERVICE"
       ;;
 
   esac
-    cd "$ORIGINAL_DIR" || exit
+
 done
 
 
