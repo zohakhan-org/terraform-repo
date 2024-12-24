@@ -91,7 +91,7 @@ for SERVICE in $SELECTED_SERVICES; do
       echo "terraform plan"
       ls -lrt "$MODULE_PATH"
 
-      terraform -chdir="$MODULE_PATH" plan -refresh-only  -replace="aws_iam_user.iam_user" -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
+      terraform -chdir="$MODULE_PATH" plan -refresh-only  -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
       echo "Terraform apply"
 
       terraform -chdir="$MODULE_PATH" apply  -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
