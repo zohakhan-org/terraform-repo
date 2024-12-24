@@ -1,4 +1,4 @@
 provider "aws" {
-  version="~> 4.0"
+  version="~> 3.0"
   region = var.aws_region
 }
