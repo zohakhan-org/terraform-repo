@@ -90,10 +90,11 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
       ls -lrt "$MODULE_PATH"
-      cat "$TFVARS_FILE" && terraform -chdir="$MODULE_PATH" plan -replace="aws_iam_user.iam_user" -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
+      terraform taint aws_iam_user.iam_user
+      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam_user_creation
       echo "Terraform apply"
 
-      terraform -chdir="$MODULE_PATH" apply -replace="aws_iam_user.iam_user" -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
+      terraform -chdir="$MODULE_PATH" apply  -var-file="$TFVARS_FILE" -target=modules.iam_user_creation
       cd - || exit
       ;;
     *)
