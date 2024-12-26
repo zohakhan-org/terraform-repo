@@ -3,22 +3,22 @@ variable "aws_region" {
   type        = string
 }
 
-variable "instance_name" {
+variable "ec2_instance_name" {
   description = "Name of the EC2 instance"
   type = string
 }
 
-variable "instance_type" {
+variable "ec2_instance_type" {
     description = "Type of the EC2 instance"
     type = string
 }
 
-variable "ami_id" {
+variable "ec2_ami_id" {
     description = "AMI ID of the EC2 instance"
     type = string
 }
 
-variable "key_name" {
+variable "ec2_key_name" {
     description = "Name of the key pair"
     type = string
 }
