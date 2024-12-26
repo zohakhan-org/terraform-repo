@@ -108,7 +108,7 @@ for SERVICE in $SELECTED_SERVICES; do
       ls -lrt "$MODULE_PATH"
       terraform -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE"
       echo "Terraform apply"
-      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"
+      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" --auto-approve
       cd "$ORIGINAL_DIR" || exit
       ;;
     *)
