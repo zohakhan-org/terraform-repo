@@ -3,32 +3,48 @@ name: AWS Infrastructure Deployment Framework
 on:
   workflow_dispatch:
     inputs:
-      selected_services:
-        description: "Comma-separated list of AWS services to deploy (e.g., vpc,s3,eks)"
-        required: true
-        type: choice
-        default: "s3"
-        options:
-          - vpc
-          - s3
-          - ec2
-          - iam
-          - Route53
-          - AuroraPostgreSQL
-          - eks
-          - ecr
-          - guardduty
-          - elasticache
-          - secretsmanager
-          - certificate-manager
-          - cloudwatch
-          - lambda
-          - systems-manager
-          - cloudtrail
-          - sendgrid
-          - stripe
-          - athene
-          - akamai
+#      selected_services:
+        ecs:
+          description: "Deploy ECS?"
+          required: false
+          default: 'false'
+          type: boolean
+        s3:
+          description: "Deploy S3?"
+          required: false
+          default: 'false'
+          type: boolean
+        rds:
+          description: "Deploy RDS?"
+          required: false
+          default: 'false'
+          type: boolean
+
+#        description: "Comma-separated list of AWS services to deploy (e.g., vpc,s3,eks)"
+#        required: true
+#        type: choice
+#        default: "s3"
+#        options:
+#          - vpc
+#          - s3
+#          - ec2
+#          - iam
+#          - Route53
+#          - AuroraPostgreSQL
+#          - eks
+#          - ecr
+#          - guardduty
+#          - elasticache
+#          - secretsmanager
+#          - certificate-manager
+#          - cloudwatch
+#          - lambda
+#          - systems-manager
+#          - cloudtrail
+#          - sendgrid
+#          - stripe
+#          - athene
+#          - akamai
       action:
         description: "Select action: apply or destroy"
         required: true
