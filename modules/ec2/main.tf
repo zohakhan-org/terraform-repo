@@ -21,6 +21,6 @@ resource "aws_instance" "ec2_instance" {
   availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
-    Name = (var.ec2_instance_name)-count.index
+    Name = (var.ec2_instance_name)
   }
 }
