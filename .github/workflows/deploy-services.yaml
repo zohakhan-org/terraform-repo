@@ -7,17 +7,22 @@ on:
         ecs:
           description: "Deploy ECS?"
           required: false
-          default: 'false'
+          default: false
           type: boolean
         s3:
           description: "Deploy S3?"
           required: false
-          default: 'false'
+          default: false
           type: boolean
         rds:
           description: "Deploy RDS?"
           required: false
-          default: 'false'
+          default: false
+          type: boolean
+        ec2:
+          description: "Deploy EC2?"
+          required: false
+          default: false
           type: boolean
 
 #        description: "Comma-separated list of AWS services to deploy (e.g., vpc,s3,eks)"
