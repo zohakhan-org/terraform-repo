@@ -76,10 +76,25 @@ jobs:
 
       - name: Save Terraform State
         if: always() && ${{ github.event.inputs.action == 'apply' }}
+        run: |
+          # Ensure the state file exists before uploading
+          if [ -f ./terraform/terraform.tfstate ]; then
+            echo "Terraform state file found. Uploading..."
+          else
+            echo "Terraform state file not found!"
+            exit 1
+          fi
         uses: actions/upload-artifact@v3
         with:
           name: terraform-state
           path: ./terraform/terraform.tfstate
+
+      - name: Restore Terraform State
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/
 
 
       - name: Terraform Destroy
@@ -88,13 +103,6 @@ jobs:
           chmod +x ./scripts/terraform_destroy.sh
           ./scripts/terraform_destroy.sh
 
-
-      - name: Restore Terraform State
-        if: alwasy() && ${{ github.event.inputs.action == 'destroy' }}
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-state
-          path: ./terraform/
 
       - name: Clean up
         run: |
