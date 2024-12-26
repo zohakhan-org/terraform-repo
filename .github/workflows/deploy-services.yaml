@@ -79,15 +79,20 @@ jobs:
         run: |
           # Ensure the state file exists before uploading
           if [ -f ./terraform/terraform.tfstate ]; then
-            echo "Terraform state file found. Uploading..."
+            echo "Terraform state file found. Proceeding to upload."
           else
-            echo "Terraform state file not found!"
+            echo "Error: Terraform state file not found!"
             exit 1
           fi
+
+        # Upload artifact
+      - name: Upload Terraform State
+        if: always() && ${{ github.event.inputs.action == 'apply' }}
         uses: actions/upload-artifact@v3
         with:
           name: terraform-state
           path: ./terraform/terraform.tfstate
+
 
       - name: Restore Terraform State
         if: ${{ github.event.inputs.action == 'destroy' }}
@@ -95,6 +100,7 @@ jobs:
         with:
           name: terraform-state
           path: ./terraform/
+
 
 
       - name: Terraform Destroy
