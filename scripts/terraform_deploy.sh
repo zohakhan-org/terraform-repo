@@ -106,9 +106,9 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
       ls -lrt "$MODULE_PATH"
-      terraform -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE" -target=modules.ec2
+      terraform -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE"
       echo "Terraform apply"
-      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.ec2
+      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"
       cd "$ORIGINAL_DIR" || exit
       ;;
     *)

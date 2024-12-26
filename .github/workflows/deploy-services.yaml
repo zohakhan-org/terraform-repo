@@ -74,6 +74,13 @@ jobs:
           chmod +x ./scripts/terraform_deploy.sh
           ./scripts/terraform_deploy.sh
 
+      - name: Save Terraform State
+        if: always() && ${{ github.event.inputs.action == 'apply' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/terraform.tfstate
+
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
@@ -83,27 +90,12 @@ jobs:
 
 
       - name: Restore Terraform State
-
+        if: alwasy() && ${{ github.event.inputs.action == 'destroy' }}
         uses: actions/download-artifact@v3
         with:
           name: terraform-state
           path: ./terraform/
-
 
       - name: Clean up
         run: |
           rm services_to_deploy.yaml
-
-      - name: Save Terraform State
-        if: always() && ${{ github.event.inputs.action == 'apply' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-state
-          path: ./terraform/terraform.tfstate
-
-      - name: Restore Terraform State
-        if: ${{ github.event.inputs.action == 'destroy' }}
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-state
-          path: ./terraform/
