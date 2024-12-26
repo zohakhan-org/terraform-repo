@@ -15,14 +15,15 @@ data "aws_ami" "latest-ubuntu" {
 }
 
 resource "aws_instance" "ec2_instance" {
-  ami = data.aws_ami.latest-ubuntu.id
-  instance_type = var.ec2_instance_type
-  count = var.ec2_instance_count
+  ami               = data.aws_ami.latest-ubuntu.id
+  instance_type     = var.ec2_instance_type
+  count             = var.ec2_instance_count
   availability_zone = data.aws_availability_zones.available.names[1]
   provisioner "local-exec" {
     command = "echo ${aws_instance.ec2_instance[count.index].private_ip} >> private_ips.txt"
 
   }
+  depends_on = [aws_instance.ec2_instance]
 
   tags = {
     Name = (var.ec2_instance_name)
