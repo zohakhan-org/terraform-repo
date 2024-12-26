@@ -4,11 +4,12 @@ data "aws_ip_ranges" "us_east_ip_ranges" {
 }
 resource "aws_security_group" "sg_custom_us_east" {
   name = "sg_custom_us_east"
+  description = "Custom Security Group for EC2 instances in us-east"
   ingress {
     from_port = "443"
     to_port = "443"
     protocol = "tcp"
-    cidr_blocks = [data.aws_ip_ranges.us_east_ip_ranges.cidr_blocks]
+    cidr_blocks = data.aws_ip_ranges.us_east_ip_ranges.cidr_blocks
 
   }
   tags = {
