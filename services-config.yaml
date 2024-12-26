@@ -40,6 +40,8 @@ services:
     instance_type: "t2.micro"
     ami_id: "ami-0b0ea68c435eb488d"
     key_name: "my-key-pair"
+    instance_name: "my-ec2-instance"
+
 
   iam_user_creation:
     policy_name: "AdministratorAccess"
