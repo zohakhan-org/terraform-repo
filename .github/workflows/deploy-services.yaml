@@ -6,7 +6,7 @@ on:
       selected_services:
         description: "Comma-separated list of AWS services to deploy (e.g., vpc,s3,eks)"
         required: true
-        default: "vpc,s3"
+        default: "s3"
         options:
           - vpc
           - s3
