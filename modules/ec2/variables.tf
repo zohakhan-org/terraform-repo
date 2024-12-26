@@ -18,4 +18,7 @@ variable "ec2_ami_id" {
     type = string
 }
 
-
+variable "ec2_instance_count" {
+  description = "Number of instances to create"
+    type        = number
+}
