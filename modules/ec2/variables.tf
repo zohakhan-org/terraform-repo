@@ -18,7 +18,4 @@ variable "ec2_ami_id" {
     type = string
 }
 
-variable "ec2_key_name" {
-    description = "Name of the key pair"
-    type = string
-}
+
