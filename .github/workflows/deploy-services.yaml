@@ -95,7 +95,7 @@ jobs:
           chmod +x ./scripts/terraform_deploy.sh
           ./scripts/terraform_deploy.sh
 
-      - name: Save Terraform State
+      - name: Save Terraform State Locally (Debugging Only)
         if: always() && ${{ github.event.inputs.action == 'apply' }}
         run: |
           # Ensure the state file exists before uploading
@@ -106,8 +106,7 @@ jobs:
             exit 1
           fi
 
-        # Upload artifact
-      - name: Upload Terraform State
+      - name: Upload Terraform State (Optional for Debugging)
         if: always() && ${{ github.event.inputs.action == 'apply' }}
         uses: actions/upload-artifact@v3
         with:
@@ -115,14 +114,13 @@ jobs:
           path: ./terraform/terraform.tfstate
 
 
-      - name: Restore Terraform State
+
+      - name: Restore Terraform State (Optional for Debugging)
         if: ${{ github.event.inputs.action == 'destroy' }}
         uses: actions/download-artifact@v3
         with:
           name: terraform-state
           path: ./terraform/
-
-
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
@@ -130,7 +128,6 @@ jobs:
           chmod +x ./scripts/terraform_destroy.sh
           ./scripts/terraform_destroy.sh
 
-
-      - name: Clean up
+      - name: Clean Up
         run: |
           rm services_to_deploy.yaml
