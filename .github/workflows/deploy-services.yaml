@@ -97,13 +97,6 @@ jobs:
 
 
 
-      - name: Restore Terraform State (Optional for Debugging)
-        if: ${{ github.event.inputs.action == 'destroy' }}
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-state
-          path: ./terraform/
-
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
         run: |
