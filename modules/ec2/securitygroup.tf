@@ -3,7 +3,7 @@ data "aws_ip_ranges" "us_east_ip_ranges" {
   services =["ec2"]
 }
 resource "aws_security_group" "sg-custom_us_east" {
-  name = "sg-custom-us-east"
+  name = "sg-custom_us_east"
   ingress {
     from_port = "443"
     to_port = "443"
