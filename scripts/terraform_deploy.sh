@@ -109,6 +109,8 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE"
       echo "Terraform apply"
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" --auto-approve
+      ls -lrt
+      cat private_ips.txt
       cd "$ORIGINAL_DIR" || exit
       ;;
     *)
