@@ -126,7 +126,6 @@ for SERVICE in $SELECTED_SERVICES; do
       echo "Terraform apply"
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" --auto-approve
       ls -lrt ./modules/vpc_nat_ec2
-      cat ./modules/vpc_nat_ec2/private_ips.txt
       cd "$ORIGINAL_DIR" || exit
       ;;
     *)
