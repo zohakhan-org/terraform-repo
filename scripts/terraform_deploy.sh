@@ -113,6 +113,22 @@ for SERVICE in $SELECTED_SERVICES; do
       cat ./modules/ec2/private_ips.txt
       cd "$ORIGINAL_DIR" || exit
       ;;
+    "vpc_nat_ec2")
+      echo "Deploying VPC NAT EC2 service..."
+      chmod +r terraform.tfvars
+      cp terraform.tfvars "$MODULE_PATH/"
+      terraform -chdir="$MODULE_PATH" init
+      echo "Terraform Validate"
+      terraform -chdir="$MODULE_PATH" validate
+      echo "terraform plan"
+      ls -lrt "$MODULE_PATH"
+      terraform -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE"
+      echo "Terraform apply"
+      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" --auto-approve
+      ls -lrt ./modules/vpc_nat_ec2
+      cat ./modules/vpc_nat_ec2/private_ips.txt
+      cd "$ORIGINAL_DIR" || exit
+      ;;
     *)
       echo "Unknown service: $SERVICE"
       ;;

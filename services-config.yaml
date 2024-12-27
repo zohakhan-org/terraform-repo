@@ -42,6 +42,7 @@ services:
     instance_count: 1
     instance_name: "my-ec2-instance"
 
+  vpc_nat_ec2:
 
   iam_user_creation:
     policy_name: "AdministratorAccess"
