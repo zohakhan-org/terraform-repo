@@ -11,8 +11,6 @@ module "vpc" {
 
   enable_nat_gateway = false
   enable_vpn_gateway = false
-  enable_classiclink             = false
-  enable_classiclink_dns_support = false
 
   tags = {
     Name = "${var.cluster-name}-vpc"
