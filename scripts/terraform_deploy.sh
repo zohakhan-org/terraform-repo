@@ -128,6 +128,21 @@ for SERVICE in $SELECTED_SERVICES; do
       ls -lrt ./modules/vpc_nat_ec2
       cd "$ORIGINAL_DIR" || exit
       ;;
+    "eks")
+      echo "Deploying EKS service..."
+      chmod +r terraform.tfvars
+      cp terraform.tfvars "$MODULE_PATH/"
+      terraform -chdir="$MODULE_PATH" init
+      echo "Terraform Validate"
+      terraform -chdir="$MODULE_PATH" validate
+      echo "terraform plan"
+      ls -lrt "$MODULE_PATH"
+      terraform -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE"
+      echo "Terraform apply"
+      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" --auto-approve
+      ls -lrt ./modules/eks
+      cd "$ORIGINAL_DIR" || exit
+      ;;
     *)
       echo "Unknown service: $SERVICE"
       ;;

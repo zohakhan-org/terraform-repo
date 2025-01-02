@@ -111,6 +111,19 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" destroy -var-file="$TFVARS_FILE" --auto-approve
       cd "$ORIGINAL_DIR" || exit
       ;;
+    "eks")
+      echo "Destroying EKS service..."
+      chmod +r terraform.tfvars
+      cp terraform.tfvars "$MODULE_PATH/"
+      terraform -chdir="$MODULE_PATH" init
+      echo "Terraform Validate"
+      terraform -chdir="$MODULE_PATH" validate
+      echo "Terraform plan (destroy)"
+      terraform -chdir="$MODULE_PATH" plan -destroy -var-file="$TFVARS_FILE" -target=modules.eks
+      echo "Terraform destroy"
+      terraform -chdir="$MODULE_PATH" destroy -var-file="$TFVARS_FILE" -target=modules.eks --auto-approve
+      cd "$ORIGINAL_DIR" || exit
+      ;;
     *)
       echo "Unknown service: $SERVICE"
       ;;
