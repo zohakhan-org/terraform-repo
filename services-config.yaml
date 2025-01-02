@@ -47,3 +47,6 @@ services:
   iam_user_creation:
     policy_name: "AdministratorAccess"
     user_prefix: "my-admin-user"
+
+  eks:
+    cluster-name: "development-pocket-cluster"
